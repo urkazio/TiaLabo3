@@ -74,12 +74,13 @@ class PerceptronClassifier:
                 for clase in clases:
                     # calcular el score (probabilidad) de pertenecer a cada clase ( logit(c) = Xt * Wt(c) )
                     scores[clase] = trainingData[i] * self.weights[clase]
-                y = scores.argMax()  # quedarse con la clase con mayor probabilidad
+                clase_pred = scores.argMax()  # quedarse con la clase con mayor probabilidad
 
-                if y != trainingLabels[i]:
+                clase_real = trainingLabels[i]
+                if clase_pred != trainingLabels[i]:
                     # cuando la prediccion no es correcta --> ajustar pesos
-                    self.weights[y] -= trainingData[i]  # alejar de la clase incorrecta
-                    self.weights[trainingLabels[i]] += trainingData[i]  # acercar a la clase correcta 
+                    self.weights[clase_pred] -= trainingData[i]  # alejar de la clase incorrecta
+                    self.weights[clase_real] += trainingData[i]  # acercar a la clase correcta
 
 
     def classify(self, data ):
