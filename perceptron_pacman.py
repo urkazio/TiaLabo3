@@ -25,7 +25,7 @@ class PerceptronClassifierPacman(PerceptronClassifier):
         PerceptronClassifier.__init__(self, legalLabels, maxIterations)
         self.weights = util.Counter()
 
-    def classify(self, data ):
+    def classify(self, data):
         """
         Data contains a list of (datum, legal moves)
         
@@ -33,21 +33,37 @@ class PerceptronClassifierPacman(PerceptronClassifier):
         legalMoves is a list of legal moves for that GameState.
         """
         guesses = []
+
         for datum, legalMoves in data:
             vectors = util.Counter()
             for l in legalMoves:
                 vectors[l] = self.weights * datum[l] #changed from datum to datum[l]
+            print "argmax",vectors.argMax()
             guesses.append(vectors.argMax())
+
         return guesses
 
 
     def train( self, trainingData, trainingLabels, validationData, validationLabels ):
-        self.features = trainingData[0][0]['Stop'].keys() # could be useful later
+        self.features = trainingData[0][0]['Stop'].keys()  # could be useful later
+        print self.features
         # DO NOT ZERO OUT YOUR WEIGHTS BEFORE STARTING TRAINING, OR
         # THE AUTOGRADER WILL LIKELY DEDUCT POINTS.
 
+        print "trainingdata",trainingData[0]
+        print "traininglabels",trainingLabels[0]
+
+
         for iteration in range(self.max_iterations):
             print "Starting iteration ", iteration, "..."
+
             for i in range(len(trainingData)):
-                "*** YOUR CODE HERE ***"
-                util.raiseNotDefined()
+                mejoresMovimientos = self.classify(trainingData)
+
+                for BestMovimiento in mejoresMovimientos:
+                    print BestMovimiento
+
+                    if BestMovimiento != trainingLabels[i]:
+                        # cuando la prediccion no es correcta --> ajustar pesos
+                        self.weights[BestMovimiento] -= 0.05  # alejar de la clase incorrecta
+                        self.weights[BestMovimiento] += 0.05   # acercar a la clase correcta
