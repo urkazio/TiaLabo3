@@ -38,7 +38,7 @@ class PerceptronClassifierPacman(PerceptronClassifier):
             vectors = util.Counter()
             for l in legalMoves:
                 vectors[l] = self.weights * datum[l] #changed from datum to datum[l]
-            print "argmax",vectors.argMax()
+            print "argmax", vectors.argMax()
             guesses.append(vectors.argMax())
 
         return guesses
@@ -46,24 +46,22 @@ class PerceptronClassifierPacman(PerceptronClassifier):
 
     def train( self, trainingData, trainingLabels, validationData, validationLabels ):
         self.features = trainingData[0][0]['Stop'].keys()  # could be useful later
-        print self.features
+        #print self.features
         # DO NOT ZERO OUT YOUR WEIGHTS BEFORE STARTING TRAINING, OR
         # THE AUTOGRADER WILL LIKELY DEDUCT POINTS.
 
-        print "trainingdata",trainingData[0]
-        print "traininglabels",trainingLabels[0]
-
+        print "[trainingdata]: ", trainingData[0][0]
+        print "[traininglabels]: ", trainingLabels[0]
 
         for iteration in range(self.max_iterations):
             print "Starting iteration ", iteration, "..."
+            bestMovesPred = self.classify(trainingData)
+            i = 0
+            for bestMovPred in bestMovesPred:
+                if bestMovPred != trainingLabels[i]:
+                    # cuando la prediccion no es correcta --> ajustar pesos
+                    self.weights -= trainingData[i][0][bestMovPred]  # alejar de la clase incorrecta
+                    self.weights += trainingData[i][0][trainingLabels[i]]  # acercar a la clase correcta"""
+                    #print "New Weight: ", self.weights
 
-            for i in range(len(trainingData)):
-                mejoresMovimientos = self.classify(trainingData)
-
-                for BestMovimiento in mejoresMovimientos:
-                    print BestMovimiento
-
-                    if BestMovimiento != trainingLabels[i]:
-                        # cuando la prediccion no es correcta --> ajustar pesos
-                        self.weights[BestMovimiento] -= 0.05  # alejar de la clase incorrecta
-                        self.weights[BestMovimiento] += 0.05   # acercar a la clase correcta
+                i += 1
