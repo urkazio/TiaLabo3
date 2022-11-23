@@ -72,7 +72,7 @@ def enhancedFeatureExtractorDigit(datum):
 
     ##
     """
-    features =  basicFeatureExtractorDigit(datum)
+    features = basicFeatureExtractorDigit(datum)
 
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()

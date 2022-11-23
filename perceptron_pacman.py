@@ -50,18 +50,13 @@ class PerceptronClassifierPacman(PerceptronClassifier):
         # DO NOT ZERO OUT YOUR WEIGHTS BEFORE STARTING TRAINING, OR
         # THE AUTOGRADER WILL LIKELY DEDUCT POINTS.
 
-        print "[trainingdata]: ", trainingData[0][0]
+        print "[trainingdata]: ", trainingData[0]
         print "[traininglabels]: ", trainingLabels[0]
 
         for iteration in range(self.max_iterations):
             print "Starting iteration ", iteration, "..."
-            bestMovesPred = self.classify(trainingData)
-            i = 0
-            for bestMovPred in bestMovesPred:
-                if bestMovPred != trainingLabels[i]:
-                    # cuando la prediccion no es correcta --> ajustar pesos
-                    self.weights -= trainingData[i][0][bestMovPred]  # alejar de la clase incorrecta
-                    self.weights += trainingData[i][0][trainingLabels[i]]  # acercar a la clase correcta"""
-                    #print "New Weight: ", self.weights
-
-                i += 1
+            for i in range(len(trainingLabels)):
+                movPred = self.classify([trainingData[i]])
+                if movPred[0] != trainingLabels[i]:
+                    self.weights -= trainingData[i][0][movPred[0]]  # alejar de la clase incorrecta
+                    self.weights += trainingData[i][0][trainingLabels[i]]  # acercar a la clase correcta
