@@ -23,10 +23,10 @@ import util
 from pacman import GameState
 
 TEST_SET_SIZE = 100
-DIGIT_DATUM_WIDTH=28
-DIGIT_DATUM_HEIGHT=28
-FACE_DATUM_WIDTH=60
-FACE_DATUM_HEIGHT=70
+DIGIT_DATUM_WIDTH = 28
+DIGIT_DATUM_HEIGHT = 28
+FACE_DATUM_WIDTH = 60
+FACE_DATUM_HEIGHT = 70
 
 
 def basicFeatureExtractorDigit(datum):
@@ -120,32 +120,36 @@ def enhancedPacmanFeatures(state, action):
     It should return a counter with { <feature name> : <feature value>, ... }
     """
     features = util.Counter()
-    state=state.generateSuccessor(0,action)
-    foods=state.getFood().asList()
-    pac=state.getPacmanPosition()
-    ghostPositions=state.getGhostPositions()
-    "*** YOUR CODE HERE ***"
-    minD=9999
-    for food in foods:
-        d=util.manhattanDistance(food,pac)
-        minD=min(d,minD)
+    state = state.generateSuccessor(0, action)
+    foods = state.getFood().asList()
+    pac = state.getPacmanPosition()
+    ghostPositions = state.getGhostPositions()
 
-    if minD!=9999:
-        features["closest food"] = 1.0/minD #con esto te da 4
-        #features["closest food"] = minD#con esto te da 2 puntos
+    "*** YOUR CODE HERE ***"
+
+    minDFood = 9999
+    for food in foods:
+        d = util.manhattanDistance(food, pac)
+        minDFood = min(d, minDFood)
+
+    if minDFood != 9999:
+        features["closest food"] = 1.0/minDFood #con esto te da 4
+        #features["closest food"] = minD #con esto te da 2 puntos
     else:
         features["closest food"] = 2
 
-    #if features["closest food"]==0:
+    #if features["closest food"] == 0:
         #pdb.set_trace()
 
+    minDGhost = 10000000000
+    for ghost in ghostPositions:
+        d = util.manhattanDistance(pac, ghost)
+        minDGhost = min(d, minDGhost)
 
-    minD=10000000000
-    for ghost in state.getGhostPositions():
-        d=util.manhattanDistance(pac,ghost) 
-        minD=min(d,minD)
+    features["closest ghost"] = minDGhost # 1/pow(minD,2)
 
-    features["closest ghost"] = minD#1/pow(minD,2)
+    movement = util.manhattanDistance(pac, state.getPacmanPosition())
+    features["movement"] = movement
 
     return features
 
@@ -154,7 +158,7 @@ def contestFeatureExtractorDigit(datum):
     """
     Specify features to use for the minicontest
     """
-    features =  basicFeatureExtractorDigit(datum)
+    features = basicFeatureExtractorDigit(datum)
     return features
 
 def enhancedFeatureExtractorFace(datum):
@@ -162,7 +166,7 @@ def enhancedFeatureExtractorFace(datum):
     Your feature extraction playground for faces.
     It is your choice to modify this.
     """
-    features =  basicFeatureExtractorFace(datum)
+    features = basicFeatureExtractorFace(datum)
     return features
 
 def analysis(classifier, guesses, testLabels, testData, rawTestData, printImage):

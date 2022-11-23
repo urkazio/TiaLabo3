@@ -56,7 +56,7 @@ class PerceptronClassifierPacman(PerceptronClassifier):
         for iteration in range(self.max_iterations):
             print "Starting iteration ", iteration, "..."
             for i in range(len(trainingLabels)):
-                movPred = self.classify([trainingData[i]])
+                movPred = self.classify([trainingData[i]]) # Devuelve la direccion predicha
                 if movPred[0] != trainingLabels[i]:
                     self.weights -= trainingData[i][0][movPred[0]]  # alejar de la clase incorrecta
                     self.weights += trainingData[i][0][trainingLabels[i]]  # acercar a la clase correcta
