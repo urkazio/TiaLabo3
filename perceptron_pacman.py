@@ -38,7 +38,7 @@ class PerceptronClassifierPacman(PerceptronClassifier):
             vectors = util.Counter()
             for l in legalMoves:
                 vectors[l] = self.weights * datum[l] #changed from datum to datum[l]
-            print "argmax", vectors.argMax()
+            #print "argmax", vectors.argMax()
             guesses.append(vectors.argMax())
 
         return guesses

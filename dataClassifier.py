@@ -151,6 +151,7 @@ def enhancedPacmanFeatures(state, action):
     movement = util.manhattanDistance(pac, state.getPacmanPosition())
     features["movement"] = movement
 
+
     return features
 
 
